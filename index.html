@@ -1,0 +1,54 @@
+<html>
+<head>
+    <title>Test API Gateway</title>
+    <meta charset="utf-8"/>
+    <meta name="viewpoint" content="width=device-width, initail-scale=1"/>
+    <script>
+
+        var apiUrl = "https://hc86p7qud9.execute-api.us-east-1.amazonaws.com/dev-01/person";
+
+        function sendGetRequest(){
+            document.getElementById("response").value = "";
+            httpGet(apiUrl + "?ipaddress=" + encodeURI(document.getElementById("ipaddress").value));
+        }
+
+        function httpGet(theUrl){
+            console.log("GET: " + theUrl);
+            var request = new XMLHttpRequest();
+            request.open( "GET", theUrl);
+            request.send( null );
+            request.onload = ()=>{ proccessResponse(request);}
+        }
+
+        function proccessResponse(request) {
+            console.log(request);
+            if(request.status == 200){
+                console.log(JSON.parse(request.response));
+                document.getElementById("response").value = JSON.stringify(JSON.parse(request.response), null, 2);
+            }
+        }
+
+    </script>
+</head>
+<body>
+<center>
+    <table border="0">
+        <tr>
+            <td>IP Address</td>
+            <td><input type="text" id="ipaddress" placeholder="Enter IP"/></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="button" value="Send GET" onclick="sendGetRequest()"/>   
+            </td>
+        </tr>
+    </table>
+
+    <br/><br/>
+
+<textarea id="response" style="width: 700px; height: 500px"></textarea>
+
+</center>
+
+</body>
+</html>
